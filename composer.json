@@ -13,7 +13,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Jaimongo\\RabbitMQBundle\\": "src/Jaimongo/RabbitMQBundle"
+            "Jaimongo\\RabbitMQBundle\\": "Jaimongo/RabbitMQBundle"
         }
     }
 }
