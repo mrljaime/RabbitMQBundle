@@ -1,0 +1,19 @@
+{
+    "name": "jaimongo/rabbitmq-bundle",
+    "description": "A symfony's based bundle to publish message to RabbitMQ",
+    "type": "library",
+    "authors": [
+        {
+            "name": "José Jaime Ramírez Calvo",
+            "email": "mr.ljaime@gmail.com"
+        }
+    ],
+    "require": {
+        "php-amqplib/php-amqplib": "^2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jaimongo\\RabbitMQBundle\\": "src/Jaimongo/RabbitMQBundle"
+        }
+    }
+}
