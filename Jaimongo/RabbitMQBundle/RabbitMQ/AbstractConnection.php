@@ -167,8 +167,6 @@ abstract class AbstractConnection
             $this->password,
             $this->vhost
         );
-
-        $this->streamConnection->channel();
     }
 
     /**
