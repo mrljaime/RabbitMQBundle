@@ -10,6 +10,7 @@ namespace Jaimongo\RabbitMQBundle\Services;
 
 
 use Jaimongo\RabbitMQBundle\Exception\RabbitNotConnectedException;
+use Jaimongo\RabbitMQBundle\Exception\RemoteHostUnrechableException;
 use Jaimongo\RabbitMQBundle\RabbitMQ\RabbitConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -44,14 +45,22 @@ class PublisherService extends AbstractService
     {
         parent::__construct($container);
 
-        $this->rabbitConnection = RabbitConnection::getInstance(
-            $this->container->getParameter("rabbit_mq.connection.host"),
-            $this->container->getParameter("rabbit_mq.connection.port"),
-            $this->container->getParameter("rabbit_mq.connection.username"),
-            $this->container->getParameter("rabbit_mq.connection.password"),
-            $this->container->getParameter("rabbit_mq.connection.vhost"),
-            [] // By now is empty
-        );
+        try {
+            $this->rabbitConnection = RabbitConnection::getInstance(
+                $this->container->getParameter("rabbit_mq.connection.host"),
+                $this->container->getParameter("rabbit_mq.connection.port"),
+                $this->container->getParameter("rabbit_mq.connection.username"),
+                $this->container->getParameter("rabbit_mq.connection.password"),
+                $this->container->getParameter("rabbit_mq.connection.vhost"),
+                [] // By now is empty
+            );
+
+        } catch (RemoteHostUnrechableException $exception) {
+            $this->container->get("logger")->critical($exception->getMessage());
+            $this->container->get("logger")->critical($exception->getTraceAsString());
+
+            return;
+        }
 
         $this->queue = $queue;
         $this->exchange = $exchange;
