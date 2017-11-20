@@ -1,3 +1,0 @@
-rabbit_mq_homepage:
-    resource: '@RabbitMQBundle/Controller'
-    type: annotation

@@ -6,6 +6,7 @@
  */
 
 namespace Jaimongo\RabbitMQBundle\RabbitMQ;
+use Jaimongo\RabbitMQBundle\Exception\RemoteHostUnrechableException;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
@@ -144,6 +145,7 @@ abstract class AbstractConnection
      * @param $password
      * @param $vhost
      * @param array $options
+     * @throws RemoteHostUnrechableException
      */
     private function __construct($host, $port, $username, $password, $vhost, array $options = [])
     {
@@ -157,16 +159,21 @@ abstract class AbstractConnection
          */
         $this->options = array_merge($this->options, $options);
 
-        /*
-         * Initialize connection
-         */
-        $this->streamConnection = new AMQPStreamConnection(
-            $this->host,
-            $this->port,
-            $this->username,
-            $this->password,
-            $this->vhost
-        );
+        try {
+            /*
+             * Initialize connection
+             */
+            $this->streamConnection = new AMQPStreamConnection(
+                $this->host,
+                $this->port,
+                $this->username,
+                $this->password,
+                $this->vhost
+            );
+
+        } catch (\Exception $exception) {
+            throw new RemoteHostUnrechableException($exception->getMessage(), 500);
+        }
     }
 
     /**
