@@ -153,7 +153,7 @@ abstract class AbstractConnection
         $this->password = $password;
         $this->vhost = $vhost;
         /*
-         * Handling options in other versioning.
+         * Handling options in other version.
          */
         $this->options = array_merge($this->options, $options);
 
