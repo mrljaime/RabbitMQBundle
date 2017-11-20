@@ -24,7 +24,7 @@ class DefaultController extends Controller
             "msg"   => $iMessage
         );
         $pubService = $this->get("rabbit_publisher");
-        $pubService->pubMessage(serialize($message));
+        $pubService->sendMessage(serialize($message));
 
         return $this->render('RabbitMQBundle:Default:index.html.twig');
     }
