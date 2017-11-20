@@ -6,6 +6,8 @@
  */
 
 namespace Jaimongo\RabbitMQBundle\RabbitMQ;
+
+
 use Jaimongo\RabbitMQBundle\Exception\RemoteHostUnrechableException;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
