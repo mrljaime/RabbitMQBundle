@@ -20,9 +20,20 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('rabbit_mq');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->arrayNode("connection")
+                ->children()
+                    ->scalarNode("host")->end()
+                    ->scalarNode("port")->end()
+                    ->scalarNode("username")->end()
+                    ->scalarNode("password")->end()
+                    ->scalarNode("vhost")->end()
+                    ->scalarNode("queue")->defaultValue("jaimongo-queue")->end()
+                    ->scalarNode("exchange")->defaultValue("jaimongo-router")->end()
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }

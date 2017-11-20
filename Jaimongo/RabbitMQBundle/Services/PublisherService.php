@@ -9,26 +9,88 @@
 namespace Jaimongo\RabbitMQBundle\Services;
 
 
+use Jaimongo\RabbitMQBundle\Exception\RabbitNotConnectedException;
+use Jaimongo\RabbitMQBundle\RabbitMQ\RabbitConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class PublisherService extends AbstractRabbitService
+
+/**
+ * Class PublisherService
+ * @package Jaimongo\RabbitMQBundle\Services
+ */
+class PublisherService extends AbstractService
 {
-    private $defaultMessageConfig = array(
-        "content_type"  => "text/plain",
-        "delivery_mode" => AMQPMessage::DELIVERY_MODE_PERSISTENT
-    );
+    /**
+     * @var RabbitConnection $rabbitConnection
+     */
+    private $rabbitConnection;
 
-    public function pubMessage($message, $queue = "jaimongo-queue", $exchange = "jaimongo-router")
+    /**
+     * @var string $queue
+     */
+    private $queue;
+
+    /**
+     * @var string $exchange
+     */
+    private $exchange;
+
+    /**
+     * PublisherService constructor.
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container, $queue, $exchange)
     {
-        $this->generateConnection();
+        parent::__construct($container);
 
-        $channel = $this->rabConnectionHandler->getConnection()->channel();
-        $channel->queue_declare($queue, false, true, false, false);
-        $channel->exchange_declare($exchange, "direct", false, true, false);
-        $channel->queue_bind($queue, $exchange);
+        $this->rabbitConnection = RabbitConnection::getInstance(
+            $this->container->getParameter("rabbit_mq.connection.host"),
+            $this->container->getParameter("rabbit_mq.connection.port"),
+            $this->container->getParameter("rabbit_mq.connection.username"),
+            $this->container->getParameter("rabbit_mq.connection.password"),
+            $this->container->getParameter("rabbit_mq.connection.vhost"),
+            [] // By now is empty
+        );
 
-        $mMessage = new AMQPMessage($message, $this->defaultMessageConfig);
+        $this->queue = $queue;
+        $this->exchange = $exchange;
+    }
 
-        $channel->basic_publish($mMessage, $exchange);
+    /**
+     * @param $message
+     * @param array $options
+     * @param null $id
+     * @throws RabbitNotConnectedException
+     */
+    public function sendMessage($message,
+                                $options = [
+                                    "content-type"  => "application/json",
+                                    "delivery"      => AMQPMessage::DELIVERY_MODE_PERSISTENT,
+                                ],
+                                $id = null) {
+
+        if (!$this->rabbitConnection->isConnected()) {
+
+            throw new RabbitNotConnectedException("There's no connection with server", 500);
+        }
+
+        $message = new AMQPMessage($message, $options);
+        $channel = $this->rabbitConnection->cookSimpleChannel($this->queue, $this->exchange, $id);
+
+        /*
+         * Publish message
+         */
+        $channel->basic_publish($message, $this->exchange);
+    }
+
+    /**
+     * @param $queue
+     * @param $exchange
+     */
+    public function overrideChannelOptions($queue, $exchange)
+    {
+        $this->queue = $queue;
+        $this->exchange = $exchange;
     }
 }

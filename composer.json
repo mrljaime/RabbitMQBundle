@@ -9,7 +9,9 @@
         }
     ],
     "require": {
-        "php-amqplib/php-amqplib": "^2.6"
+        "php-amqplib/php-amqplib": "^2.6",
+        "symfony/config": "^3.3.13",
+        "symfony/dependency-injection": "^3.3.13"
     },
     "autoload": {
         "psr-4": {
