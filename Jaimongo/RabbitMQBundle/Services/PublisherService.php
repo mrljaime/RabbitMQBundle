@@ -1,20 +1,23 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: jaime
- * Date: 12/09/17
- * Time: 21:34
+ * @author <a href="mailto:mr.ljaime@gmail.com">Jose jaime Ramirez Calvo</a>
+ * @version 1.1
+ *
+ * @version 1
+ * @since 2017-09-12
+ *
+ * @version 1.1
+ * @since 2018-04-01
  */
 
-namespace Jaimongo\RabbitMQBundle\Services;
+namespace RabbitMQBundle\Services;
 
-
-use Jaimongo\RabbitMQBundle\Exception\RabbitNotConnectedException;
-use Jaimongo\RabbitMQBundle\Exception\RemoteHostUnrechableException;
-use Jaimongo\RabbitMQBundle\RabbitMQ\RabbitConnection;
+use RabbitMQBundle\Exception\RabbitNotConnectedException;
+use RabbitMQBundle\Exception\RemoteHostUnrechableException;
+use RabbitMQBundle\RabbitMQ\RabbitConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 
 /**
  * Class PublisherService

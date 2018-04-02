@@ -1,14 +1,22 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: jaime
- * Date: 20/11/17
- * Time: 11:06
+ * @author <a href="mailto:mr.ljaime@gmail.com">Jose jaime Ramirez Calvo</a>
+ * @version 1.1
+ *
+ * @version 1
+ * @since 2017-11-20
+ *
+ * @version 1.1
+ * @since 2018-04-01
  */
 
-namespace Jaimongo\RabbitMQBundle\Exception;
+namespace RabbitMQBundle\Exception;
 
-
+/**
+ * Class RemoteHostUnrechableException
+ * @package RabbitMQBundle\Exception
+ */
 class RemoteHostUnrechableException extends \Exception
 {
 

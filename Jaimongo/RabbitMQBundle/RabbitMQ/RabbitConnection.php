@@ -1,12 +1,17 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: jaime
- * Date: 19/11/17
- * Time: 21:56
+ * @author <a href="mailto:mr.ljaime@gmail.com">Jose jaime Ramirez Calvo</a>
+ * @version 1.1
+ *
+ * @version 1
+ * @since 2017-11-17
+ *
+ * @version 1.1
+ * @since 2018-04-01
  */
 
-namespace Jaimongo\RabbitMQBundle\RabbitMQ;
+namespace RabbitMQBundle\RabbitMQ;
 
 
 /**

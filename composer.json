@@ -10,12 +10,12 @@
     ],
     "require": {
         "php-amqplib/php-amqplib": "^2.6",
-        "symfony/config": "^3.3.13",
-        "symfony/dependency-injection": "^3.3.13"
+        "symfony/config": "^4.0.6",
+        "symfony/dependency-injection": "^4.0.6"
     },
     "autoload": {
         "psr-4": {
-            "Jaimongo\\RabbitMQBundle\\": "Jaimongo/RabbitMQBundle"
+            "RabbitMQBundle\\": "Jaimongo/RabbitMQBundle"
         }
     }
 }
