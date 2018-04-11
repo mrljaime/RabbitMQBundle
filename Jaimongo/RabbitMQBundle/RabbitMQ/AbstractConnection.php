@@ -13,7 +13,7 @@
 
 namespace RabbitMQBundle\RabbitMQ;
 
-use Jaimongo\RabbitMQBundle\Exception\RemoteHostUnrechableException;
+use RabbitMQBundle\Exception\RemoteHostUnrechableException;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
@@ -113,21 +113,26 @@ abstract class AbstractConnection
      *
      * @param string $queue
      * @param string $exchange
+     * @param bool $durable
      * @param null $id
      * @return mixed|\PhpAmqpLib\Channel\AMQPChannel
      */
-    public function cookSimpleChannel($queue = "jaimongo-queue", $exchange = "jaimongo-router", $id = null)
-    {
+    public function cookSimpleChannel($queue = "jaimongo-queue",
+                                      $exchange = "jaimongo-router",
+                                      $durable = true,
+                                      $id = null
+    ) {
+
         if (!is_null($id)) {
             if (!key_exists($id, $this->channels)) {
-                $this->channels[$id] = $this->_cookSimpleChannel($id, $queue, $exchange);
+                $this->channels[$id] = $this->_cookSimpleChannel($id, $queue, $exchange, $durable);
             }
 
             return $this->channels[$id];
         }
 
         if (!array_key_exists("default", $this->channels)) {
-            $this->channels["default"] = $this->_cookSimpleChannel($id, $queue, $exchange);
+            $this->channels["default"] = $this->_cookSimpleChannel($id, $queue, $exchange, $durable);
         }
 
         return $this->channels["default"];
@@ -187,12 +192,13 @@ abstract class AbstractConnection
      * @param $id
      * @param $queue
      * @param $exchange
+     * @param $durable
      * @return \PhpAmqpLib\Channel\AMQPChannel
      */
-    private function _cookSimpleChannel($id, $queue, $exchange)
+    private function _cookSimpleChannel($id, $queue, $exchange, $durable)
     {
         $channel = $this->streamConnection->channel($id);
-        $channel->queue_declare($queue, false, true, false, false);
+        $channel->queue_declare($queue, false, $durable, false, false);
         $channel->exchange_declare($exchange, "direct", false, true, false);
         $channel->queue_bind($queue, $exchange);
 
