@@ -118,7 +118,7 @@ abstract class AbstractConnection
      * @return mixed|\PhpAmqpLib\Channel\AMQPChannel
      */
     public function cookSimpleChannel($queue = "jaimongo-queue",
-                                      $exchange = "jaimongo-router",
+                                      $exchange = "",
                                       $durable = true,
                                       $id = null
     ) {
