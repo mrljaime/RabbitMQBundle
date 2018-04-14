@@ -39,7 +39,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode("password")->end()
                     ->scalarNode("vhost")->end()
                     ->scalarNode("queue")->defaultValue("jaimongo-queue")->end()
-                    ->scalarNode("exchange")->defaultValue("jaimongo-router")->end()
+                    ->scalarNode("exchange")->defaultValue("")->end()
                 ->end()
             ->end()
         ;
